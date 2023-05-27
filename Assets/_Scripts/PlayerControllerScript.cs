@@ -11,6 +11,8 @@ public class PlayerControllerScript : MonoBehaviour
     public GameManagerScript gameManagerScript;
     public float fallMultiplier;
     private AudioSource audioSource;
+    public float maxTimer = 1;
+    private float timer;
 
     [SerializeField] private AudioClip jump;
     [SerializeField] private AudioClip hit;
@@ -19,6 +21,7 @@ public class PlayerControllerScript : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        timer = maxTimer;
     }
 
 
@@ -28,6 +31,21 @@ public class PlayerControllerScript : MonoBehaviour
         if(Input.touchCount > 0 && fishIsAlive)
         {
             myRigidBody2D.velocity = Vector2.up * flapStrength;
+
+            if (timer < maxTimer)
+            {
+                timer += Time.deltaTime;
+            }
+            else
+            {
+                audioSource.PlayOneShot(jump);
+                timer = 0;
+            }
+
+        }
+        else
+        {
+            timer = maxTimer;
         }
 
         if(myRigidBody2D.velocity.y < 0)
