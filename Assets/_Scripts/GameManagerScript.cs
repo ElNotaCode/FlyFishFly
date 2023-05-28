@@ -13,6 +13,8 @@ public class GameManagerScript : MonoBehaviour
     public Text textScore;
     private int score = 0;
 
+    [SerializeField] private InterstitialAdScript intesticialAdScript;
+
     private void Start()
     {
         Time.timeScale = 1;
@@ -24,6 +26,7 @@ public class GameManagerScript : MonoBehaviour
         {
             if (timer > gameOverDelay)
             {
+                intesticialAdScript.ShowAd();
                 gameOverScreen.SetActive(true);
                 Time.timeScale = 0;
             }
