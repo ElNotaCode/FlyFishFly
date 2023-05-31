@@ -12,6 +12,9 @@ public class GameManagerScript : MonoBehaviour
     public float gameOverDelay;
     public Text textScore;
     private int score = 0;
+    private bool oneTime = true;
+
+    [SerializeField] private InterstitialAdScript intesticialAdScript;
 
     private void Start()
     {
@@ -24,8 +27,11 @@ public class GameManagerScript : MonoBehaviour
         {
             if (timer > gameOverDelay)
             {
-                gameOverScreen.SetActive(true);
-                Time.timeScale = 0;
+                if (oneTime)
+                {
+                    GameOverAdScreen();
+                    oneTime = false;
+                }
             }
             else
             {
@@ -44,6 +50,25 @@ public class GameManagerScript : MonoBehaviour
     {
         score++;
         textScore.text = score.ToString();
+    }
+
+    private void GameOverAdScreen()
+    {
+        if (!PlayerPrefs.HasKey("adCounter"))
+        {
+            PlayerPrefs.SetInt("adCounter", 3);
+        }
+
+        gameOverScreen.SetActive(true);
+        Time.timeScale = 0;
+
+        PlayerPrefs.SetInt("adCounter", (PlayerPrefs.GetInt("adCounter") - 1));
+
+        if (PlayerPrefs.GetInt("adCounter") <= 0)
+        {
+            intesticialAdScript.ShowAd();
+            PlayerPrefs.SetInt("adCounter", 4);
+        }
     }
 
 }
