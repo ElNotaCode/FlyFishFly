@@ -8,6 +8,14 @@ public class ButtonLogicsScript : MonoBehaviour
 
     public GameObject soundButtonMute;
 
+    private void Start()
+    {
+        if (PlayerPrefs.GetInt("musicMute") != 1)
+        {
+            soundButtonMute.SetActive(true);
+        }
+    }
+
     public void OnTryAgainClick()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
